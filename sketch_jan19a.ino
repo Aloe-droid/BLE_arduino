@@ -1,13 +1,19 @@
+#include <Servo.h>
 #include <SoftwareSerial.h>
+
+
 #define BT_RX 7
 #define BT_TX 8
+#define SERVO 9
 
 SoftwareSerial HM10(BT_RX,BT_TX); //RX(7 pin)-> HM10(TX), TX(8 pin) -> HM10(RX)
+Servo mServo; //서보 변수 선언
 String text = "";
 void setup() {
   Serial.begin(9600);
   Serial.println("hello");
   HM10.begin(9600);
+  mServo.attach(SERVO);
 }
 
 void loop() {
@@ -19,7 +25,8 @@ void loop() {
       Serial.println(degree);
       text = "";
       //각도를 조절하는 함수
-
+      mServo.write(degree.toInt());
+      delay(900);
 
       //각도 조절이 끝나면 ack를 전송한다.
       String ACK = degree + "/ack";
